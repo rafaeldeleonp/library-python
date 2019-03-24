@@ -1,0 +1,9 @@
+# files
+Dockerfile
+.gitignore
+.editorconfig
+.dockerignore
+
+# folders
+.git
+__pycache__

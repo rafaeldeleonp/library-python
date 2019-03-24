@@ -1,0 +1,8 @@
+version: '2'
+services:
+  app:
+    container_name: library-python
+    build: .
+    command: python -u app.py
+    ports: 
+      - "3000:3000"
