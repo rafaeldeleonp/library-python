@@ -1,11 +1,11 @@
 FROM python:3.7
 
-WORKDIR /app
+WORKDIR /library-python
 
-COPY ./ /app 
+COPY . /library-python
 
-RUN pip install -r requirements.txt
+RUN pip --no-cache-dir install -r requirements.txt
 
 EXPOSE 3000
 
-CMD [ "python", "./app.py" ]
+CMD [ "python", "run.py" ]
