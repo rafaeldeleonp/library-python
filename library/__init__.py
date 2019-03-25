@@ -1,8 +1,7 @@
 # Import the framework
 import logging as logger
 from flask import Flask
-from library.db import get_client
-from library.seeds.authors import get_authors
+from library.db import get_client, initialize_data
 
 logger.basicConfig(level="DEBUG")
 
@@ -13,16 +12,15 @@ app.config.from_pyfile('config.py')
 # Get MongoClient
 client = get_client(app.config["MONGO_URI"], logger)
 
-# Always drop library database
-client.drop_database('library')
+db_name = app.config["MONGO_DATABASE"]
 
-db = client.library
+# Always drop database
+client.drop_database(db_name)
 
-# Insert authors data
-authors = get_authors()
-authors_collection = db.authors
-result = authors_collection.insert_many(authors)
-logger.info("Inserted authors documents %s" % result.inserted_ids)
+db = client[db_name]
+
+# Initialize MongoDB data
+initialize_data(db, logger)
 
 
 @app.route('/')
