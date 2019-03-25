@@ -2,49 +2,8 @@ from pymongo import MongoClient
 from library.seeds.authors import get_authors
 from library.seeds.genres import get_genres
 from library.seeds.books import get_books
-
-
-def get_authors_ids(author, data):
-    items = author.split(",")
-    authors = []
-
-    for item in items:
-        for d in data:
-            fullname = d["first_name"] + " " + d["last_name"]
-
-            if fullname == item:
-                authors.append(d["_id"])
-                break
-
-    return authors
-
-
-def get_genres_ids(genre, data):
-    items = genre.split(",")
-    genres = []
-
-    for item in items:
-        for d in data:
-            if d["name"] == item:
-                genres.append(d["_id"])
-                break
-
-    return genres
-
-
-def format_books(books, authors, genres):
-    formatted_books = []
-
-    for book in books:
-        formatted_books.append({
-            "ISBN": book["ISBN"],
-            "title": book["title"],
-            "summary": book["summary"],
-            "authors": get_authors_ids(book["authors"], authors),
-            "genres": get_genres_ids(book["genres"], genres),
-        })
-
-    return formatted_books
+from library.seeds.pages import get_pages
+from library.utils import format_books, format_pages
 
 
 def get_client(mongoURI, logger):
@@ -70,8 +29,12 @@ def initialize_data(db, logger):
 
     # Insert books data
     books = get_books()
-    formatted_books = format_books(books, authors, genres)
+    pages = get_pages()
+    formatted_books = format_books(books, authors, genres, pages)
     books_result = db.books.insert_many(formatted_books)
     logger.info("Inserted books documents %s" % books_result.inserted_ids)
 
     # Insert pages data
+    formatted_pages = format_pages(pages, books)
+    pages_result = db.pages.insert_many(formatted_pages)
+    logger.info("Inserted pages documents %s" % pages_result.inserted_ids)
