@@ -1,6 +1,7 @@
 # library-python
 
 Project to learn python and to test syntax. When you run the application, it will automatically run the seed and when you stop the application it will drop the database.
+There are only two available endpoints `/book/{id}` and `/book/{id}/page/{page_number}/{format}`.
 
 ## Getting started
 
