@@ -1,7 +1,10 @@
 # Import the framework
 import logging as logger
 from flask import Flask
-from library.db import get_client, initialize_data
+from flask_restful import Api
+from library.db import connect_db, initialize_data
+from library.resources.book import Book
+from library.resources.page import Page
 
 logger.basicConfig(level="DEBUG")
 
@@ -9,8 +12,11 @@ logger.basicConfig(level="DEBUG")
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
 
+# Create API
+api = Api(app)
+
 # Get MongoClient
-client = get_client(app.config["MONGO_URI"], logger)
+client = connect_db(app.config["MONGO_URI"], logger)
 
 db_name = app.config["MONGO_DATABASE"]
 
@@ -24,5 +30,11 @@ initialize_data(db, logger)
 
 
 @app.route('/')
-def todo():
-    return "Hello!"
+def hello_world():
+    return 'Hello, World!'
+
+
+# Resources routes
+api.add_resource(Book, '/book/<string:id>', resource_class_kwargs={'db': db})
+api.add_resource(Page, '/book/<string:id>/page/<int:page_number>/<string:format>',
+                 resource_class_kwargs={'db': db})

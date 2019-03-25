@@ -1,3 +1,11 @@
+from bson import json_util
+import json
+
+
+def format_response(item):
+    return json.loads(json.dumps(item, indent=4, default=json_util.default))
+
+
 def get_authors_ids(author, data):
     items = author.split(",")
     authors = []

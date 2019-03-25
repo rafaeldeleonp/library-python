@@ -6,7 +6,7 @@ from library.seeds.pages import get_pages
 from library.utils import format_books, format_pages
 
 
-def get_client(mongoURI, logger):
+def connect_db(mongoURI, logger):
     try:
         client = MongoClient(mongoURI)
         logger.info("MongoDB connected successfully on URI: %s" % (mongoURI))
