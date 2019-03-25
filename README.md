@@ -1,5 +1,6 @@
 # library-python
-Project to learn python and to test syntax
+
+Project to learn python and to test syntax. When you run the application, it will automatically run the seed and when you stop the application it will drop the database.
 
 ## Getting started
 
