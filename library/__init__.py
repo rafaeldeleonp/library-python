@@ -14,7 +14,7 @@ client = get_client(app.config["MONGO_URI"], logger)
 
 db_name = app.config["MONGO_DATABASE"]
 
-# Always drop database
+# Always drop database. This is just for this testing project.
 client.drop_database(db_name)
 
 db = client[db_name]
