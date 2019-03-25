@@ -1,6 +1,11 @@
-from library import app
-from mongoengine import *
+from pymongo import MongoClient
 
-app.config.from_pyfile('config.py')
 
-connect(name="library", host=app.config["MONGO_URI"])
+def get_client(mongoURI, logger):
+    try:
+        client = MongoClient(mongoURI)
+        logger.info("MongoDB connected successfully on URI: %s" % (mongoURI))
+    except:
+        logger.error("Could not connect to MongoDB")
+
+    return client
